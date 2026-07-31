@@ -9,6 +9,7 @@ src/
 │   │   └── login/
 │   ├── (dashboard)/
 │   │   ├── layout.tsx                  # Dashboard shell + sidebar
+│   │   ├── page.tsx                    # Dashboard home (URL: /)
 │   │   ├── master-data/
 │   │   │   ├── employees/
 │   │   │   │   ├── page.tsx            # List
@@ -28,8 +29,8 @@ src/
 │   │   │   ├── run/
 │   │   │   ├── review/
 │   │   │   └── approval/
-│   │   ├── thr/
-│   │   ├── tax/
+│   │   ├── thr/                        # Event-Based layer (lihat module-breakdown.md)
+│   │   ├── tax/                        # Event-Based layer (lihat module-breakdown.md)
 │   │   │   ├── monthly/
 │   │   │   └── reconciliation/
 │   │   ├── reports/
@@ -44,6 +45,14 @@ src/
 ├── components/
 │   ├── ui/                             # shadcn/ui (auto-generated, jangan diedit manual)
 │   ├── common/                         # Reusable generic components
+│   │   ├── layout/                     # Shell aplikasi: sidebar, header, nav, theme toggle
+│   │   │   ├── app-sidebar.tsx
+│   │   │   ├── app-header.tsx
+│   │   │   ├── nav-main.tsx
+│   │   │   ├── nav-user.tsx
+│   │   │   ├── nav-projects.tsx
+│   │   │   ├── team-switcher.tsx
+│   │   │   └── theme-toogle.tsx
 │   │   ├── data-table/
 │   │   │   ├── index.tsx
 │   │   │   ├── toolbar.tsx
@@ -101,6 +110,7 @@ src/
 │   └── api.types.ts                    # ApiResponse, ApiError, Paginated
 │
 └── constants/
+    ├── navigation.ts                   # NAV_ITEMS untuk sidebar (lihat rbac.md)
     ├── roles.ts
     ├── payroll-status.ts
     └── routes.ts

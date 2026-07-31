@@ -4,22 +4,30 @@ Keywords: rbac, role, permission, middleware, guard, sidebar, navigation, admin,
 
 ## Route Protection
 
-Next.js **Middleware** di Edge Runtime — jalan sebelum halaman di-render.
+Next.js 16 me-rename **Middleware** jadi **Proxy** (fungsi & konvensi file sama persis, cuma nama file & nama fungsi yang berubah: `middleware.ts` → `proxy.ts`, `export function middleware` → `export function proxy`). Proyek ini pakai Next.js 16 — gunakan konvensi `proxy.ts`, bukan `middleware.ts` (deprecated, masih jalan tapi ter-warning saat build).
+
+Proxy jalan di Edge Runtime — sebelum halaman di-render.
+
+> **Penting:** route group seperti `(dashboard)` dan `(auth)` adalah konstruksi Next.js untuk pengelompokan folder saja — **tidak pernah muncul di URL asli**. Matcher **tidak boleh** mereferensikan nama group (mis. `'/(dashboard)/:path*'` tidak akan pernah match apa pun). Gunakan pendekatan exclusion-based: proteksi semua path kecuali yang eksplisit publik.
 
 ```ts
-// middleware.ts
-export function middleware(request: NextRequest) {
-  const token = request.cookies.get('access_token')
-  if (!token) return NextResponse.redirect('/login')
+// proxy.ts (di src/proxy.ts jika proyek pakai src/)
+const PUBLIC_PATHS = ['/login', '/unauthorized', '/dev/status']
 
-  const role = getTokenRole(token)
+export function proxy(request: NextRequest) {
+  if (PUBLIC_PATHS.includes(request.nextUrl.pathname)) return NextResponse.next()
+
+  const token = request.cookies.get(process.env.NEXT_PUBLIC_COOKIE_NAME ?? 'access_token')
+  if (!token) return NextResponse.redirect(new URL('/login', request.url))
+
+  const role = getTokenRole(token.value)
   if (!canAccess(request.nextUrl.pathname, role)) {
-    return NextResponse.redirect('/unauthorized')
+    return NextResponse.redirect(new URL('/unauthorized', request.url))
   }
 }
 
 export const config = {
-  matcher: ['/(dashboard)/:path*'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|api).*)'],
 }
 ```
 
@@ -27,6 +35,7 @@ export const config = {
 
 | Module | Admin | HR | Finance | Employee |
 |---|:---:|:---:|:---:|:---:|
+| Dashboard Home (`/`) | ✅ | ✅ | ✅ | ✅ |
 | Master Data | ✅ | ✅ | ❌ | ❌ |
 | Configuration | ✅ | ❌ | ✅ | ❌ |
 | Operational | ✅ | ✅ | ❌ | ❌ |
@@ -37,12 +46,15 @@ export const config = {
 | Payslip | ✅ | ✅ | ✅ | Own only |
 
 > **Data sensitif (salary, tax):** hanya dapat diakses Admin & Finance
+>
+> **Event-Based layer:** baris THR & Tax termasuk layer *Event-Based* (lihat [module-breakdown.md](module-breakdown.md)) — dijalankan tidak setiap bulan, berbeda dari Operational/Payroll Core yang rutin bulanan.
 
 ## Action Permissions
 
 ```ts
 // lib/auth/permissions.ts
 export const ROUTE_PERMISSIONS: Record<string, Role[]> = {
+  '/':              ['admin', 'hr', 'finance', 'employee'],
   '/master-data':   ['admin', 'hr'],
   '/configuration': ['admin', 'finance'],
   '/operational':   ['admin', 'hr'],

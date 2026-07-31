@@ -25,7 +25,8 @@ Keywords: design system, tone, enterprise, dense, dark theme, color palette, typ
 
 Tailwind v4 tidak membutuhkan `tailwind.config.ts`. Semua token dikonfigurasi langsung di `app/globals.css`:
 - **`@theme inline`** → Tailwind utility tokens (font, font size, warna brand)
-- **`:root`** → CSS variables untuk shadcn/ui semantic tokens
+- **`:root`** → CSS variables baseline (light) untuk shadcn/ui semantic tokens
+- **`.dark`** → override token Enterprise & Dense — tema default aplikasi, diaktifkan lewat `next-themes` (`ThemeProvider` di `app/layout.tsx` dengan `defaultTheme="dark"`)
 
 ```css
 /* app/globals.css — @theme inline (Tailwind utility tokens) */
@@ -61,8 +62,8 @@ Tailwind v4 tidak membutuhkan `tailwind.config.ts`. Semua token dikonfigurasi la
   --color-status-info: #60A5FA;
 }
 
-/* :root = Enterprise & Dense dark theme (default) */
-:root {
+/* .dark = Enterprise & Dense dark theme (tema default aplikasi) */
+.dark {
   --background: #13171E;    /* surface.DEFAULT */
   --foreground: #CDD6E0;    /* text.primary */
   --primary: #2E74C0;       /* primary.DEFAULT */

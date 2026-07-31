@@ -61,20 +61,7 @@ npm install @next/font
 }
 ```
 
-```css
-/* app/globals.css — override shadcn CSS variables ke Enterprise theme */
-:root {
-  --background: 215 28% 9%;          /* #13171E */
-  --foreground: 210 25% 82%;         /* #CDD6E0 */
-  --card: 220 27% 7%;                /* #0D1117 */
-  --border: 215 22% 15%;             /* #1E2530 */
-  --primary: 211 62% 47%;            /* #2E74C0 */
-  --primary-foreground: 0 0% 100%;
-  --muted: 215 22% 15%;
-  --muted-foreground: 213 19% 40%;   /* #6B8299 */
-  --destructive: 0 72% 51%;          /* #EF4444 */
-}
-```
+> **Override CSS variables:** Tailwind v4 pakai nilai hex langsung (bukan HSL triplet ala shadcn v3), dan token Enterprise & Dense di-set di class `.dark` — bukan `:root` — karena toggle dikelola `next-themes` dengan `defaultTheme="dark"`. Token lengkap & rationale ada di [design-system.md](../ui-ux/design-system.md) section *Design Tokens* — jangan duplikasi nilai di sini supaya tidak divergen di kemudian hari.
 
 ## Project Configuration Files
 
@@ -89,12 +76,14 @@ npm install @next/font
       "@hooks/*": ["./src/hooks/*"],
       "@services/*": ["./src/services/*"],
       "@stores/*": ["./src/stores/*"],
-      "@types/*": ["./src/types/*"],
+      "@app-types/*": ["./src/types/*"],
       "@constants/*": ["./src/constants/*"]
     }
   }
 }
 ```
+
+> **Catatan:** alias dinamai `@app-types/*`, bukan `@types/*` — TypeScript mereservasi nama `@types` untuk resolusi package DefinitelyTyped (`node_modules/@types`), jadi path alias literal `@types/*` menyebabkan error `TS6137: Cannot import type declaration files`. Semua referensi `types/` di dokumen lain (`api-layer.md`, `state-management.md`, dst.) yang menyebut folder `src/types/` tetap benar sebagai nama folder — yang berubah cuma alias importnya.
 
 ```ts
 // next.config.ts

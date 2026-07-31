@@ -6,18 +6,18 @@ Keywords: module, layer, master data, configuration, operational, payroll core, 
 
 | Layer | Module | Notes |
 |---|---|---|
-| **Master Data** | Employee, Organization, Salary | Setup awal, tidak setiap bulan |
-| **Configuration** | Payroll Component, Tax (PTKP/Rate), BPJS | Setup awal, perubahan berdampak global |
-| **Operational** | Attendance, Overtime, Loan | Data periodik bulanan |
+| **Master Data** | Employees, Organization, Salary | Setup awal, tidak setiap bulan |
+| **Configuration** | Payroll Components, Tax (PTKP/Rate), BPJS | Setup awal, perubahan berdampak global |
+| **Operational** | Attendance, Overtime, Loans | Data periodik bulanan |
 | **Payroll Core** | Run, Review & Adjustment, Approval & Lock | Proses utama bulanan |
 | **Event-Based** | THR, Tax Reconciliation | Tidak setiap bulan |
-| **Output** | Payslip, Reports (Payroll, Tax, Loan) | Hanya setelah payroll approved |
+| **Output** | Payslip, Reports (Payroll, Tax, Loans) | Hanya setelah payroll approved |
 
 ## High-Level Flow
 
 ```
 Master Data ──┐
               ├──► Configuration ──► Operational ──► Payroll Core ──► Output
-              │                                           │
-              └───────────────── THR / Tax ──────────────┘
+              │                                              │
+              └────────────── Event-Based (THR/Tax) ─────────┘
 ```
