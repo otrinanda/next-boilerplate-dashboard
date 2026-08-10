@@ -29,7 +29,7 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full bg-surface">
+      <body className="min-h-full bg-surface p-4">
         <Providers>
           <main className="">{children}</main>
         </Providers>

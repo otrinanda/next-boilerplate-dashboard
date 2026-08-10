@@ -1,4 +1,5 @@
 import { AppSidebar } from "@/components/common/layout/app-sidebar";
+import { FatalErrorBoundary } from "@/components/common/fatal-error-boundary";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 export default function WithSidebarLayout({
@@ -9,7 +10,9 @@ export default function WithSidebarLayout({
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset className="px-4">{children}</SidebarInset>
+      <SidebarInset className="px-4">
+        <FatalErrorBoundary>{children}</FatalErrorBoundary>
+      </SidebarInset>
     </SidebarProvider>
   );
 }
