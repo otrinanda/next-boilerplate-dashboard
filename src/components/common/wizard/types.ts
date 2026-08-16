@@ -28,11 +28,16 @@ export interface WizardProps<TFieldValues extends FieldValues> {
   isSubmitting?: boolean
   /** "completed-only" (default): jump back freely, jump forward only into already-completed steps. "none": fully linear, no step-circle clicks. */
   allowStepClick?: "completed-only" | "none"
+  /** "stepper" (default): numbered circles. "tabs": underlined tab strip — same click/gating rules, different look. */
+  navigationStyle?: "stepper" | "tabs"
   className?: string
   /** Provide to enable localStorage auto-save/restore. Omit to disable draft persistence entirely. */
   draftKey?: string
   /** Field paths to omit from the persisted draft (e.g. File-valued fields, which can't survive JSON.stringify). */
   draftExclude?: FieldPath<TFieldValues>[]
+  previousLabel?: string
+  nextLabel?: string
+  submitLabel?: string
 }
 
 export interface WizardStepperStep {

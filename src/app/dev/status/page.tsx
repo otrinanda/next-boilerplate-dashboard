@@ -57,7 +57,6 @@ interface Phase {
 interface DesignToken {
   name: string;
   cssVar: string;
-  hex: string;
   label: string;
 }
 
@@ -179,20 +178,20 @@ const PHASES: Phase[] = [
 ];
 
 const DESIGN_TOKENS: DesignToken[] = [
-  { name: "primary",        cssVar: "--color-primary",        hex: "#2E74C0", label: "Biru utama" },
-  { name: "primary-light",  cssVar: "--color-primary-light",  hex: "#60A5FA", label: "Biru muda" },
-  { name: "surface",        cssVar: "--color-surface",        hex: "#13171E", label: "Background" },
-  { name: "surface-raised", cssVar: "--color-surface-raised", hex: "#0D1117", label: "Card bg" },
-  { name: "surface-overlay",cssVar: "--color-surface-overlay",hex: "#1A1F28", label: "Overlay" },
-  { name: "border",         cssVar: "--color-border",         hex: "#1E2530", label: "Border" },
-  { name: "text-primary",   cssVar: "--color-text-primary",   hex: "#CDD6E0", label: "Teks utama" },
-  { name: "text-secondary", cssVar: "--color-text-secondary", hex: "#6B8299", label: "Teks sekunder" },
-  { name: "text-muted",     cssVar: "--color-text-muted",     hex: "#3D4D5E", label: "Teks muted" },
-  { name: "status-success", cssVar: "--color-status-success", hex: "#10B981", label: "Sukses" },
-  { name: "status-warning", cssVar: "--color-status-warning", hex: "#F59E0B", label: "Peringatan" },
-  { name: "status-danger",  cssVar: "--color-status-danger",  hex: "#EF4444", label: "Bahaya" },
-  { name: "status-info",    cssVar: "--color-status-info",    hex: "#60A5FA", label: "Info" },
-  { name: "brand-navy",     cssVar: "--color-brand-navy",     hex: "#1B2B4B", label: "Brand navy" },
+  { name: "primary",        cssVar: "--color-primary",        label: "Biru utama" },
+  { name: "primary-light",  cssVar: "--color-primary-light",  label: "Biru muda" },
+  { name: "surface",        cssVar: "--color-surface",        label: "Background" },
+  { name: "surface-raised", cssVar: "--color-surface-raised", label: "Card bg" },
+  { name: "surface-overlay",cssVar: "--color-surface-overlay",label: "Overlay" },
+  { name: "border",         cssVar: "--color-border",         label: "Border" },
+  { name: "text-primary",   cssVar: "--color-text-primary",   label: "Teks utama" },
+  { name: "text-secondary", cssVar: "--color-text-secondary", label: "Teks sekunder" },
+  { name: "text-muted",     cssVar: "--color-text-muted",     label: "Teks muted" },
+  { name: "status-success", cssVar: "--color-status-success", label: "Sukses" },
+  { name: "status-warning", cssVar: "--color-status-warning", label: "Peringatan" },
+  { name: "status-danger",  cssVar: "--color-status-danger",  label: "Bahaya" },
+  { name: "status-info",    cssVar: "--color-status-info",    label: "Info" },
+  { name: "brand-navy",     cssVar: "--color-brand-navy",     label: "Brand navy" },
 ];
 
 const LIB_VERSIONS: LibVersion[] = [
@@ -273,14 +272,14 @@ function TokenSwatch({ token }: { token: DesignToken }) {
           <div className="overflow-hidden rounded-md border border-border cursor-default">
             <div
               className="h-9 w-full"
-              style={{ backgroundColor: token.hex }}
+              style={{ backgroundColor: `var(${token.cssVar})` }}
             />
             <div className="bg-surface-raised px-2 py-1.5">
               <p className="text-text-primary text-[11px] font-medium truncate">
                 {token.name}
               </p>
-              <p className="text-text-muted font-mono text-[10px] mt-0.5">
-                {token.hex}
+              <p className="text-text-muted font-mono text-[10px] mt-0.5 truncate">
+                {token.cssVar}
               </p>
             </div>
           </div>

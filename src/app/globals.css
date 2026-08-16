@@ -48,8 +48,11 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 
   /* Brand & extended color tokens */
+  /* brand-navy: intentionally fixed (logo/brand mark), not theme-dependent.
+     primary-muted: derived from --primary, which is already identical in both
+     themes, so it doesn't need a split either. */
   --color-brand-navy: #1b2b4b;
-  --color-primary-light: #60a5fa;
+  --color-primary-light: var(--primary-light);
   --color-primary-muted: rgba(46, 116, 192, 0.15);
   --color-surface: var(--surface);
   --color-surface-raised: var(--surface-raised);
@@ -59,10 +62,10 @@
   --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
   --color-text-inverse: var(--text-inverse);
-  --color-status-success: #10b981;
-  --color-status-warning: #f59e0b;
-  --color-status-danger: #ef4444;
-  --color-status-info: #60a5fa;
+  --color-status-success: var(--status-success);
+  --color-status-warning: var(--status-warning);
+  --color-status-danger: var(--status-danger);
+  --color-status-info: var(--status-info);
 
   /* Custom font size scale */
   --text-2xs: 9px;
@@ -125,6 +128,16 @@
   --text-secondary: #64748b;
   --text-muted: #94a3b8;
   --text-inverse: #ffffff;
+
+  /* Status colors — darker shades than dark-mode so text (form errors, status
+     badges) still clears WCAG AA (4.5:1) against a white background. */
+  --status-success: #047857;
+  --status-warning: #b45309;
+  --status-danger: #dc2626;
+  --status-info: #2563eb;
+
+  /* Same reasoning as status-info above — #60a5fa only clears 2.54:1 on white. */
+  --primary-light: #2563eb;
 }
 
 .dark {
@@ -171,6 +184,14 @@
   --text-secondary: #6b8299;
   --text-muted: #3d4d5e;
   --text-inverse: #0d1117;
+
+  /* Status colors — original brighter shades, tuned for contrast against dark surfaces. */
+  --status-success: #10b981;
+  --status-warning: #f59e0b;
+  --status-danger: #ef4444;
+  --status-info: #60a5fa;
+
+  --primary-light: #60a5fa;
 }
 
 @layer base {

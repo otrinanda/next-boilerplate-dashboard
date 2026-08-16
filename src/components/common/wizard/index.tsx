@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Form } from "@/components/ui/form"
 import { cn } from "@/lib/utils"
 import { WizardStepper } from "@/components/common/wizard/stepper"
+import { WizardTabs } from "@/components/common/wizard/wizard-tabs"
 import { WizardFooter } from "@/components/common/wizard/footer"
 import { saveDraft, loadDraft } from "@/components/common/wizard/draft-storage"
 import type { StepStatus, WizardProps } from "@/components/common/wizard/types"
@@ -48,9 +49,13 @@ export function Wizard<TFieldValues extends FieldValues>({
   onSubmit,
   isSubmitting,
   allowStepClick = "completed-only",
+  navigationStyle = "stepper",
   className,
   draftKey,
   draftExclude,
+  previousLabel,
+  nextLabel,
+  submitLabel,
 }: WizardProps<TFieldValues>) {
   const [visited, setVisited] = React.useState<Set<number>>(() => new Set([0]))
   const activeStepRef = React.useRef(activeStep)
@@ -138,12 +143,21 @@ export function Wizard<TFieldValues extends FieldValues>({
   return (
     <Form {...form}>
       <div className={cn("space-y-6", className)}>
-        <WizardStepper
-          steps={steps.map((step) => ({ id: step.id, label: step.label }))}
-          activeStep={activeStep}
-          getStatus={getStatus}
-          onStepClick={allowStepClick === "none" ? undefined : handleStepClick}
-        />
+        {navigationStyle === "tabs" ? (
+          <WizardTabs
+            steps={steps.map((step) => ({ id: step.id, label: step.label }))}
+            activeStep={activeStep}
+            getStatus={getStatus}
+            onStepClick={allowStepClick === "none" ? undefined : handleStepClick}
+          />
+        ) : (
+          <WizardStepper
+            steps={steps.map((step) => ({ id: step.id, label: step.label }))}
+            activeStep={activeStep}
+            getStatus={getStatus}
+            onStepClick={allowStepClick === "none" ? undefined : handleStepClick}
+          />
+        )}
         <Card className="bg-surface-raised border-border">
           <CardContent>{steps[activeStep].content}</CardContent>
         </Card>
@@ -153,6 +167,9 @@ export function Wizard<TFieldValues extends FieldValues>({
           isSubmitting={isSubmitting}
           onPrevious={() => onStepChange(activeStep - 1)}
           onNext={handleNext}
+          previousLabel={previousLabel}
+          nextLabel={nextLabel}
+          submitLabel={submitLabel}
         />
       </div>
     </Form>

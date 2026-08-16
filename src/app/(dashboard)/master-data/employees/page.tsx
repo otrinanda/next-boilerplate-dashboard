@@ -1,10 +1,13 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
+import { PlusIcon } from "lucide-react"
 import { AppHeader } from "@/components/common/layout/app-header"
 import { PageHeader } from "@/components/common/page-header"
 import { ErrorState } from "@/components/common/error-state"
 import { ConfirmDialog } from "@/components/common/confirm-dialog"
+import { Button } from "@/components/ui/button"
 import { DataTable } from "@/components/common/data-table"
 import { DataTableToolbar } from "@/components/common/data-table/toolbar"
 import { getEmployeeColumns } from "@/components/modules/employees/employee-columns"
@@ -44,6 +47,14 @@ export default function EmployeesPage() {
         <PageHeader
           title="Employee Management"
           description="Kelola data master karyawan."
+          actions={
+            <Button asChild size="sm">
+              <Link href="/master-data/employees/add">
+                <PlusIcon />
+                Add Employee
+              </Link>
+            </Button>
+          }
         />
         <div className="mt-4">
           {isError ? (
