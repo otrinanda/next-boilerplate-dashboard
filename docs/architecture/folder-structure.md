@@ -57,6 +57,20 @@ src/
 │   │   │   ├── index.tsx
 │   │   │   ├── toolbar.tsx
 │   │   │   └── pagination.tsx
+│   │   ├── form-fields/                # Field generik siap pakai (control + name, RHF)
+│   │   │   ├── text-field.tsx
+│   │   │   ├── textarea-field.tsx
+│   │   │   ├── select-field.tsx
+│   │   │   ├── combobox-field.tsx
+│   │   │   ├── checkbox-field.tsx
+│   │   │   ├── date-picker-field.tsx
+│   │   │   └── file-upload-field.tsx
+│   │   ├── wizard/                     # Multi-step form shell (stepper + step content + footer)
+│   │   │   ├── index.tsx
+│   │   │   ├── stepper.tsx
+│   │   │   ├── footer.tsx
+│   │   │   ├── draft-storage.ts
+│   │   │   └── types.ts
 │   │   ├── page-header/
 │   │   ├── status-badge/
 │   │   ├── confirm-dialog/

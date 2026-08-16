@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server"
 import { canAccess, getTokenRole } from "@lib/auth/guards"
 
-const PUBLIC_PATHS = ["/login", "/unauthorized", "/dev/status"]
+const PUBLIC_PATHS = ["/login", "/unauthorized", "/dev/status", "/dev/component-display", "/dev/wizard-display"]
 
 // Next.js 16 me-rename Middleware jadi Proxy (fungsi & konvensi file sama, cuma nama).
 export function proxy(request: NextRequest) {

@@ -10,7 +10,7 @@ export default function WithSidebarLayout({
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset className="px-4">
+      <SidebarInset className="p-4">
         <FatalErrorBoundary>{children}</FatalErrorBoundary>
       </SidebarInset>
     </SidebarProvider>

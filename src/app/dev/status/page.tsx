@@ -100,6 +100,8 @@ const PHASES: Phase[] = [
       { label: "ErrorState", done: true },
       { label: "FatalErrorBoundary", done: true },
       { label: "Shared DataTable (common/data-table, sorting/filtering/pagination/row actions)", done: true },
+      { label: "Form field components (Text, Textarea, Select, Combobox, Checkbox, DatePicker, FileUpload)", done: true },
+      { label: "Wizard shell (stepper, per-step validation, draft autosave/restore)", done: true },
       { label: "Login page + LoginForm (RHF + Zod) — menunggu kontrak BE", done: false },
     ],
   },
@@ -113,7 +115,7 @@ const PHASES: Phase[] = [
     items: [
       { label: "Employee list page + table (data mock, menunggu BE)", done: true },
       { label: "Deactivate employee flow (row action + ConfirmDialog)", done: true },
-      { label: "Employee create/edit form", done: false },
+      { label: "Employee create/edit form (field components & Wizard siap, form belum dibangun)", done: false },
       { label: "Employee detail page", done: false },
       { label: "Organisasi (divisi, jabatan, lokasi)", done: false },
       { label: "Struktur gaji dasar", done: false },
@@ -297,7 +299,7 @@ function TokenSwatch({ token }: { token: DesignToken }) {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-const FILE_COUNT = 42; // update per phase commit
+const FILE_COUNT = 100; // update per phase commit — src/**/* file count
 
 export default function BuildProgressPage() {
   const totalDone = PHASES.filter((p) => p.status === "done").length;
