@@ -6,13 +6,9 @@ import {
   type SortingState,
   flexRender,
   getCoreRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
-  getFilteredRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import {
   Table,
   TableBody,
@@ -22,18 +18,32 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Skeleton } from "@/components/ui/skeleton"
+import { DataTablePagination } from "@/components/common/data-table/pagination"
 
-interface EmployeeTableProps<TData, TValue> {
+interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   isLoading?: boolean
+  pagination?: {
+    pageIndex: number
+    pageSize: number
+    total: number
+    onPageChange: (page: number) => void
+  }
+  toolbar?: React.ReactNode
 }
 
-export function EmployeeTable<TData, TValue>({
+// Server-side pagination — data yang masuk sudah berupa satu halaman dari API
+// (lihat docs/architecture/performance.md), jadi tabel ini TIDAK melakukan
+// pagination/filtering sendiri di client. Sorting tetap client-side, jalan di
+// atas halaman data yang sedang ditampilkan.
+export function DataTable<TData, TValue>({
   columns,
   data,
   isLoading,
-}: EmployeeTableProps<TData, TValue>) {
+  pagination,
+  toolbar,
+}: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
 
   const table = useReactTable({
@@ -41,22 +51,13 @@ export function EmployeeTable<TData, TValue>({
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
     state: { sorting },
   })
 
   return (
     <div>
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter by name..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)}
-          className="max-w-sm"
-        />
-      </div>
+      {toolbar && <div className="flex items-center py-4">{toolbar}</div>}
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -74,7 +75,7 @@ export function EmployeeTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              Array.from({ length: 5 }).map((_, i) => (
+              Array.from({ length: pagination?.pageSize ?? 5 }).map((_, i) => (
                 <TableRow key={i}>
                   {columns.map((_, j) => (
                     <TableCell key={j}>
@@ -103,24 +104,14 @@ export function EmployeeTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
-      </div>
+      {pagination && (
+        <DataTablePagination
+          pageIndex={pagination.pageIndex}
+          pageSize={pagination.pageSize}
+          total={pagination.total}
+          onPageChange={pagination.onPageChange}
+        />
+      )}
     </div>
   )
 }

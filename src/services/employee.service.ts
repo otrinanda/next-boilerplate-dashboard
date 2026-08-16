@@ -20,9 +20,26 @@ const MOCK_EMPLOYEES: Employee[] = [
 ]
 
 export const employeeService = {
-  getAll: (_params: EmployeeListParams): Promise<PaginatedResponse<Employee>> =>
-    Promise.resolve({ data: MOCK_EMPLOYEES, total: MOCK_EMPLOYEES.length, page: 1, limit: 20 }),
+  getAll: (params: EmployeeListParams): Promise<PaginatedResponse<Employee>> => {
+    const page = params.page ?? 1
+    const limit = params.limit ?? 20
+    const search = params.search?.trim().toLowerCase()
+
+    const filtered = MOCK_EMPLOYEES.filter((e) => {
+      if (search && !e.name.toLowerCase().includes(search)) return false
+      if (params.status && e.status !== params.status) return false
+      return true
+    })
+
+    const start = (page - 1) * limit
+    return Promise.resolve({
+      data: filtered.slice(start, start + limit),
+      total: filtered.length,
+      page,
+      limit,
+    })
     // apiClient.get(ENDPOINTS.employees.root, { params }),
+  },
 
   getById: (id: string): Promise<Employee> => {
     const found = MOCK_EMPLOYEES.find((e) => e.id === id)
@@ -41,6 +58,10 @@ export const employeeService = {
     // return apiClient.put(ENDPOINTS.employees.detail(id), payload)
   },
 
-  deactivate: (_id: string): Promise<void> => Promise.resolve(),
-    // apiClient.patch(ENDPOINTS.employees.deactivate(id)),
+  deactivate: (id: string): Promise<void> => {
+    const found = MOCK_EMPLOYEES.find((e) => e.id === id)
+    if (found) found.status = "inactive"
+    return Promise.resolve()
+    // return apiClient.patch(ENDPOINTS.employees.deactivate(id))
+  },
 }

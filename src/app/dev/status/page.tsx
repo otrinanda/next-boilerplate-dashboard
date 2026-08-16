@@ -75,7 +75,7 @@ const PHASES: Phase[] = [
     name: "Foundation",
     description: "Setup, design system, auth, layout shell, common components",
     status: "active",
-    progress: 68,
+    progress: 95,
     icon: Layers,
     items: [
       { label: "Project setup Next.js 16 + Tailwind v4", done: true },
@@ -89,14 +89,20 @@ const PHASES: Phase[] = [
       { label: "TanStack Query client + query keys", done: true },
       { label: "Zustand stores (auth, payroll, error)", done: true },
       { label: "Permission matrix + route guards (canAccess, ROUTE_PERMISSIONS)", done: true },
-      { label: "Middleware JWT decode + route guard", done: true },
+      { label: "Proxy JWT decode + route guard (+ dev bypass)", done: true },
       { label: "use-permissions hook", done: true },
-      { label: "use-auth hook", done: false },
-      { label: "Login page + LoginForm (RHF + Zod v4)", done: false },
-      { label: "AppSidebar role-aware nav (NAV_ITEMS belum di-wire)", done: false },
-      { label: "AppTopbar user menu + logout", done: false },
-      { label: "PageHeader, shared DataTable, StatusBadge (common components)", done: false },
-      { label: "ConfirmDialog, ErrorState, FatalErrorBoundary", done: false },
+      { label: "use-auth hook (login/logout)", done: true },
+      { label: "AppSidebar role-aware nav (via canAccess)", done: true },
+      { label: "AppTopbar user menu + logout", done: true },
+      { label: "StatusBadge", done: true },
+      { label: "PageHeader", done: true },
+      { label: "ConfirmDialog", done: true },
+      { label: "ErrorState", done: true },
+      { label: "FatalErrorBoundary", done: true },
+      { label: "Shared DataTable (common/data-table, sorting/filtering/pagination/row actions)", done: true },
+      { label: "Form field components (Text, Textarea, Select, Combobox, Checkbox, DatePicker, FileUpload)", done: true },
+      { label: "Wizard shell (stepper, per-step validation, draft autosave/restore)", done: true },
+      { label: "Login page + LoginForm (RHF + Zod) — menunggu kontrak BE", done: false },
     ],
   },
   {
@@ -104,13 +110,13 @@ const PHASES: Phase[] = [
     name: "Master Data",
     description: "Employee, organisasi, struktur gaji",
     status: "active",
-    progress: 17,
+    progress: 33,
     icon: Database,
     items: [
       { label: "Employee list page + table (data mock, menunggu BE)", done: true },
-      { label: "Employee create/edit form", done: false },
+      { label: "Deactivate employee flow (row action + ConfirmDialog)", done: true },
+      { label: "Employee create/edit form (field components & Wizard siap, form belum dibangun)", done: false },
       { label: "Employee detail page", done: false },
-      { label: "Deactivate employee flow", done: false },
       { label: "Organisasi (divisi, jabatan, lokasi)", done: false },
       { label: "Struktur gaji dasar", done: false },
     ],
@@ -293,7 +299,7 @@ function TokenSwatch({ token }: { token: DesignToken }) {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-const FILE_COUNT = 42; // update per phase commit
+const FILE_COUNT = 100; // update per phase commit — src/**/* file count
 
 export default function BuildProgressPage() {
   const totalDone = PHASES.filter((p) => p.status === "done").length;
@@ -654,12 +660,14 @@ export default function BuildProgressPage() {
         <p className="text-text-muted text-xs">
           File ini ada di{" "}
           <code className="text-text-secondary bg-surface-overlay px-1.5 py-0.5 rounded text-[11px]">
-            app/page.tsx
+            src/app/dev/status/page.tsx
           </code>
         </p>
         <div className="flex items-center gap-2">
-          <Circle size={7} className="fill-status-success text-status-success" />
-          <span className="text-text-muted text-xs">Phase 1 complete</span>
+          <Circle size={7} className="fill-status-warning text-status-warning" />
+          <span className="text-text-muted text-xs">
+            {activePhase ? `Phase ${activePhase.id} ${activePhase.name} in progress` : "Semua phase selesai"}
+          </span>
         </div>
       </div>
 

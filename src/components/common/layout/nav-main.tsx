@@ -40,7 +40,6 @@ export function NavMain({
   pathname: string;
 }) {
   const { isMobile, state } = useSidebar();
-  console.log("NavMain render", { pathname, state });
   const MenuCollapse = ({
     menu,
     pathname,

@@ -34,3 +34,18 @@ export function useCreateEmployee() {
     },
   })
 }
+
+export function useDeactivateEmployee() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (id: string) => employeeService.deactivate(id),
+    onSuccess: () => {
+      toast.success("Employee deactivated.")
+      queryClient.invalidateQueries({ queryKey: queryKeys.employees.all })
+    },
+    onError: () => {
+      toast.error("Failed to deactivate employee.")
+    },
+  })
+}

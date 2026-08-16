@@ -252,6 +252,10 @@ export function EmployeeForm({ onSubmit, defaultValues }) {
 }
 ```
 
+> **Field generik siap pakai:** untuk field standar (text, textarea, select, combobox, checkbox, date picker, file upload), pakai komponen dari `components/common/form-fields/` (`TextField`, `SelectField`, `ComboboxField`, dst — semua menerima `control` + `name` langsung) daripada menulis ulang `FormField`/`FormItem`/`FormControl` manual seperti contoh di atas. **Tetap butuh `<Form {...form}>` (provider RHF) di pohon komponen** — field-field ini cuma menghilangkan kebutuhan menulis ulang `FormField`/`FormItem`/`FormControl` tiap kali, bukan menghilangkan providernya. Kalau dipakai lewat `<Wizard>` (lihat di bawah), provider ini sudah otomatis disediakan Wizard, tidak perlu ditulis manual lagi. Preview semua field ini ada di `/dev/component-display`. Pola manual di atas tetap relevan untuk field yang benar-benar custom/tidak umum.
+>
+> **Form multi-step (wizard):** untuk form yang perlu dipecah jadi beberapa step (mis. Add New Employee: Identity → Address → BPJS → Family → Experience → Organization), pakai `components/common/wizard/` (`<Wizard steps={...} form={form} activeStep={...} onStepChange={...} onSubmit={...} />`). Satu `useForm` dipakai bersama untuk semua step (bukan form terpisah per step) — Wizard hanya mengatur step mana yang ditampilkan dan memvalidasi field yang relevan per step sebelum lanjut, dan sudah membungkus isinya dengan `<Form {...form}>` sendiri. Mendukung auto-save/restore draft ke localStorage lewat prop `draftKey`. Preview ada di `/dev/wizard-display`.
+
 ## Loading & Error Pattern
 
 ```tsx

@@ -136,3 +136,6 @@ const filteredNav = NAV_ITEMS.filter(item =>
   item.allowedRoles.includes(user.role)
 )
 ```
+
+> **Implementasi nyata:** `AppSidebar` punya nav bertingkat (item + sub-item per modul), bukan flat seperti `NAV_ITEMS` di atas. Untuk menghindari duplikasi sumber kebenaran, filtering-nya pakai `canAccess(item.url, user.role)` langsung (fungsi yang sama dipakai `proxy.ts`) terhadap `ROUTE_PERMISSIONS`, bukan `NAV_ITEMS`. `NAV_ITEMS`/`constants/navigation.ts` tetap ada untuk kebutuhan yang butuh daftar nav flat (mis. command palette, breadcrumb generator).
+```

@@ -29,14 +29,11 @@ import {
   ClipboardList,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { useAuthStore } from "@stores/auth.store";
+import { canAccess } from "@lib/auth/guards";
 
 // This is sample data.
 const data = {
-  user: {
-    name: "ILA Admin",
-    email: "admin.ila@msone.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   teams: [
     {
       name: "MS One",
@@ -194,6 +191,18 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
+  const { user } = useAuthStore();
+
+  // Role-aware nav: tanpa session (dev bypass, lihat proxy.ts) semua item ditampilkan
+  // supaya tetap bisa preview; setelah login nyata, item difilter per ROUTE_PERMISSIONS
+  // via canAccess (sumber yang sama dipakai proxy.ts) — lihat docs/architecture/rbac.md.
+  const navMain = user ? data.navMain.filter((item) => canAccess(item.url, user.role)) : data.navMain;
+
+  const displayUser = {
+    name: user?.name ?? "Dev Mode",
+    subtitle: user?.role ?? "Belum login (dev bypass)",
+    avatar: "/avatars/shadcn.jpg",
+  };
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -201,11 +210,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} pathname={pathname} />
+        <NavMain items={navMain} pathname={pathname} />
         <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={displayUser} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
